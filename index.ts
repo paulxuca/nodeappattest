@@ -1,11 +1,12 @@
 import express from "express";
-import { verifyAttestation, verifyAssertion } from "node-app-attest";
+import { verifyAssertion, verifyAttestation } from "node-app-attest";
 
 const app = express();
 
 app.use(express.json());
 
-app.post("/", (req, res) => {
+app.post("/", async (req, res) => {
+    console.log(req.body);
     if (req.body.type === 'attestation') {
         try {
             const r = verifyAttestation({
@@ -13,9 +14,12 @@ app.post("/", (req, res) => {
                 attestation: Buffer.from(req.body.params.attestation, 'base64'),
             });
     
-            res.status(200).json(r);
+            res.status(200).json({
+                ...r,
+                receipt: r.receipt.toString('base64'),
+            });
         } catch (err) {
-            res.status(400).json({ error: err.message });
+            res.status(400).json({ error: err instanceof Error ? err.message : `${err}` });
         }
 
         return;
@@ -30,7 +34,7 @@ app.post("/", (req, res) => {
     
             res.status(200).json(r);
         } catch (err) {
-            res.status(400).json({ error: err.message });
+            res.status(400).json({ error: err instanceof Error ? err.message : `${err}` });
         }
 
         return;
