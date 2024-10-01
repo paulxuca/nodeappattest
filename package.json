@@ -1,0 +1,21 @@
+{
+  "name": "nodeappattest",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "node-app-attest": "^0.0.6"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only ./index.ts",
+    "gcp-build": "yarn build",
+    "start": "node ./dist/index.js"
+  }
+}
